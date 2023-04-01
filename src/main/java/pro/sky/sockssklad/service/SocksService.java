@@ -5,11 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import pro.sky.sockssklad.models.Color;
 import pro.sky.sockssklad.models.Socks;
-
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class SocksService {
@@ -34,11 +31,11 @@ public class SocksService {
         saveToFile();
     }
     public Socks shipmentSocks(Socks socks){
-        for (int i = 0; i <= socksMap.size(); i++) {
-            if (socksMap.get(i).getSizeOfSocks() == socks.getSizeOfSocks()
-                    && socksMap.get(i).getCottonPart() == socks.getCottonPart() && socksMap.get(i).getColor() == socks.getColor()){
+        for (int i = 0; i < socksMap.size(); i++) {
+            if (socksMap.get(i).getSizeOfSocks().equals(socks.getSizeOfSocks())
+                    && socksMap.get(i).getCottonPart() == socks.getCottonPart() && socksMap.get(i).getColor().equals(socks.getColor())){
 
-                if (socksMap.get(i).getQuantity() > socks.getQuantity()) {
+                if (socksMap.get(i).getQuantity() >= socks.getQuantity()) {
                     socksMap.get(i).setQuantity(socksMap.get(i).getQuantity()-socks.getQuantity());
                     socksMap.set(i,socksMap.get(i));
                     return socksMap.get(i);
