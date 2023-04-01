@@ -1,7 +1,7 @@
 package pro.sky.sockssklad.models;
 
 public enum Color{
-    black,
+    black,//
     white,
     red,
     orange,

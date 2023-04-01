@@ -6,7 +6,7 @@ public enum SizeOfSocks {
     M(41),
     L(42),
     XL(43);
-    final int size;
+    final int size;//
 
     SizeOfSocks(int size) {
         this.size = size;

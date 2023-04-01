@@ -6,9 +6,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Socks {
-    Color color;
-    SizeOfSocks sizeOfSocks;
-    int cottonPart;
-    int quantity;
-    private boolean InStock;
+    Color color; //цвет
+    SizeOfSocks sizeOfSocks; //размер
+    int cottonPart; //количество хлопка
+    int quantity; //количество на складе
 }
