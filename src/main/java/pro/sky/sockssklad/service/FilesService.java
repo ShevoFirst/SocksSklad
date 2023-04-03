@@ -9,8 +9,10 @@ import java.nio.file.Path;
 
 @Service
 public class FilesService {
-    private Path path = Path.of("src/main/resources/socks.json");
-    public void saveToJsonFile(Object object) {
+    String dataFilePath = "src/main/resources/";
+    public void saveToJsonFile(Object object,String fileName) {
+
+        Path path = Path.of(dataFilePath, fileName);
         try {
             String json = new ObjectMapper().writeValueAsString(object);
             Files.createDirectories(path.getParent());
@@ -23,20 +25,20 @@ public class FilesService {
             e.printStackTrace();
         }
     }
-    public File getDataFile(){
-        return new File(path.toString());
+    public File getDataFile(String fileName){
+        return new File(dataFilePath+"/"+fileName);
     }
-    public String readFromFile() {
+    public String readFromFile(String fileName) {
         try {
-            return Files.readString(path);
+            return Files.readString(Path.of(dataFilePath, fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public boolean cleanFile(){
         try {
-            Files.deleteIfExists(path);
-            Files.createFile(path);
+            Files.deleteIfExists(Path.of(dataFilePath));
+            Files.createFile(Path.of(dataFilePath));
             return true;
         } catch (IOException e) {
             return false;

@@ -1,8 +1,6 @@
 package pro.sky.sockssklad.controllers;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "Работа с файлами", description = "CRUD операции и другие эндпоинты с файлами")
+@Tag(name = "Работа со складом", description = "CRUD операции и другие эндпоинты со складом носков")
 public class socksController {
     private final SocksService socksService;
 

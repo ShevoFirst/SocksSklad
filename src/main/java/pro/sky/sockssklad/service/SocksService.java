@@ -4,13 +4,16 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import pro.sky.sockssklad.models.Color;
+import pro.sky.sockssklad.models.Operation;
 import pro.sky.sockssklad.models.Socks;
+import pro.sky.sockssklad.models.Type;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
 @Service
 public class SocksService {
     private ArrayList<Socks> socksMap = new ArrayList<>();
+    private ArrayList<Operation> operationList = new ArrayList<>();
     private final FilesService filesService;
 
     public SocksService(FilesService filesService) {
@@ -22,11 +25,12 @@ public class SocksService {
             if (test.getSizeOfSocks().equals(socks.getSizeOfSocks()) && test.getColor().equals(socks.getColor())
                     && test.getCottonPart() == socks.getCottonPart()){
                 test.setQuantity(socks.getQuantity()+ test.getQuantity());
+                operationList.add(new Operation(Type.add,socks));
                 saveToFile();
-                System.out.println("rrer");
                 return;
             }
         }
+        operationList.add(new Operation(Type.add,socks));
         socksMap.add(socks);
         saveToFile();
     }
@@ -42,6 +46,7 @@ public class SocksService {
                 }
             }
         }
+        operationList.add(new Operation(Type.put,socks));
         saveToFile();
         return null;
     }
@@ -61,18 +66,23 @@ public class SocksService {
             if (test.equals(socks)){
                 finded1.add(test);
                 socksMap.remove(test);
+                operationList.add(new Operation(Type.del,socks));
             }
         }
         saveToFile();
         return finded1;
     }
     private void saveToFile(){
-        filesService.saveToJsonFile(socksMap);
+        filesService.saveToJsonFile(socksMap,"/socks.json");
+        filesService.saveToJsonFile(operationList,"/operation.json");
     }
     private void readFromFile(){
-        String json = filesService.readFromFile();
+        String SocksJson = filesService.readFromFile("/socks.json");
+        String OperationJson = filesService.readFromFile("/operation.json");
         try {
-            socksMap = new ObjectMapper().readValue(json, new TypeReference<>() {
+            socksMap = new ObjectMapper().readValue(SocksJson, new TypeReference<>() {
+            });
+            operationList = new ObjectMapper().readValue(OperationJson, new TypeReference<ArrayList<Operation>>() {
             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
