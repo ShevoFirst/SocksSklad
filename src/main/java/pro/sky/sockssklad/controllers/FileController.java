@@ -6,5 +6,5 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/files")
 @Tag(name = "Работа с файлами", description = "CRUD операции и другие эндпоинты с файлами")
     public class FileController {
-
+//
 }

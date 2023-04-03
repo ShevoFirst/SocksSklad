@@ -34,5 +34,5 @@ public class socksController {
     public ResponseEntity getSocks(@PathVariable String color, @PathVariable int size, @PathVariable int cottonMin, @PathVariable int cottonMax){
         ArrayList<Socks> searchList= socksService.getSocks(color, size, cottonMin, cottonMax);
         return ResponseEntity.ok(searchList);
-    }
+    }//
 }
