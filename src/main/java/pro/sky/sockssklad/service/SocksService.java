@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 @Service
 public class SocksService {
-    private ArrayList<Socks> socksMap = new ArrayList<>();
-    private ArrayList<Operation> operationList = new ArrayList<>();
+    private ArrayList<Socks> socksArrayList = new ArrayList<>();
+    private ArrayList<Operation> operationArrayList = new ArrayList<>();
     private final FilesService filesService;
 
     public SocksService(FilesService filesService) {
@@ -21,38 +21,38 @@ public class SocksService {
     }
 
     public void addSocks(Socks socks){
-        for(Socks test : socksMap){
+        for(Socks test : socksArrayList){
             if (test.getSizeOfSocks().equals(socks.getSizeOfSocks()) && test.getColor().equals(socks.getColor())
                     && test.getCottonPart() == socks.getCottonPart()){
                 test.setQuantity(socks.getQuantity()+ test.getQuantity());
-                operationList.add(new Operation(Type.add,socks));
+                operationArrayList.add(new Operation(Type.add,socks));
                 saveToFile();
                 return;
             }
         }
-        operationList.add(new Operation(Type.add,socks));
-        socksMap.add(socks);
+        operationArrayList.add(new Operation(Type.add,socks));
+        socksArrayList.add(socks);
         saveToFile();
     }
     public Socks shipmentSocks(Socks socks){
-        for (int i = 0; i < socksMap.size(); i++) {
-            if (socksMap.get(i).getSizeOfSocks().equals(socks.getSizeOfSocks())
-                    && socksMap.get(i).getCottonPart() == socks.getCottonPart() && socksMap.get(i).getColor().equals(socks.getColor())){
+        for (int i = 0; i < socksArrayList.size(); i++) {
+            if (socksArrayList.get(i).getSizeOfSocks().equals(socks.getSizeOfSocks())
+                    && socksArrayList.get(i).getCottonPart() == socks.getCottonPart() && socksArrayList.get(i).getColor().equals(socks.getColor())){
 
-                if (socksMap.get(i).getQuantity() >= socks.getQuantity()) {
-                    socksMap.get(i).setQuantity(socksMap.get(i).getQuantity()-socks.getQuantity());
-                    socksMap.set(i,socksMap.get(i));
-                    return socksMap.get(i);
+                if (socksArrayList.get(i).getQuantity() >= socks.getQuantity()) {
+                    socksArrayList.get(i).setQuantity(socksArrayList.get(i).getQuantity()-socks.getQuantity());
+                    socksArrayList.set(i, socksArrayList.get(i));
+                    return socksArrayList.get(i);
                 }
             }
         }
-        operationList.add(new Operation(Type.put,socks));
+        operationArrayList.add(new Operation(Type.put,socks));
         saveToFile();
         return null;
     }
     public ArrayList<Socks> getSocks(String color, int size, int cottonMin , int cottonMax){
         ArrayList<Socks> finded = new ArrayList<>();
-        for(Socks test : socksMap){
+        for(Socks test : socksArrayList){
             if (test.getSizeOfSocks().getIntSizeOfSocks() == size && test.getColor() == Color.valueOf(color)
                     && test.getCottonPart()>cottonMin && test.getCottonPart()<cottonMax){
                 finded.add(test);
@@ -62,27 +62,27 @@ public class SocksService {
     }
     public ArrayList<Socks> delSocks(Socks socks){
         ArrayList<Socks> finded1 = new ArrayList<>();
-        for(Socks test : socksMap){
+        for(Socks test : socksArrayList){
             if (test.equals(socks)){
                 finded1.add(test);
-                socksMap.remove(test);
-                operationList.add(new Operation(Type.del,socks));
+                socksArrayList.remove(test);
+                operationArrayList.add(new Operation(Type.del,socks));
             }
         }
         saveToFile();
         return finded1;
     }
     private void saveToFile(){
-        filesService.saveToJsonFile(socksMap,"/socks.json");
-        filesService.saveToJsonFile(operationList,"/operation.json");
+        filesService.saveToJsonFile(socksArrayList,"/socks.json");
+        filesService.saveToJsonFile(operationArrayList,"/operation.json");
     }
     private void readFromFile(){
         String SocksJson = filesService.readFromFile("/socks.json");
         String OperationJson = filesService.readFromFile("/operation.json");
         try {
-            socksMap = new ObjectMapper().readValue(SocksJson, new TypeReference<>() {
+            socksArrayList = new ObjectMapper().readValue(SocksJson, new TypeReference<>() {
             });
-            operationList = new ObjectMapper().readValue(OperationJson, new TypeReference<ArrayList<Operation>>() {
+            operationArrayList = new ObjectMapper().readValue(OperationJson, new TypeReference<ArrayList<Operation>>() {
             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

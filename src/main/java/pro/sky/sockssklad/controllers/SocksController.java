@@ -13,10 +13,10 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/api")
 @Tag(name = "Работа со складом", description = "CRUD операции и другие эндпоинты со складом носков")
-public class socksController {
+public class SocksController {
     private final SocksService socksService;
 
-    public socksController(SocksService socksService) {
+    public SocksController(SocksService socksService) {
         this.socksService = socksService;
     }
 
@@ -99,7 +99,7 @@ public class socksController {
         ArrayList searchList= socksService.getSocks(color, size, cottonMin, cottonMax);
         if (!searchList.isEmpty())
             return ResponseEntity.ok(searchList);
-        return ResponseEntity.status(400).build();
+        return ResponseEntity.status(204).build();
     }
     @DeleteMapping
     @Operation(
@@ -125,7 +125,7 @@ public class socksController {
     public ResponseEntity delSocks(@RequestBody Socks socks){
         ArrayList<Socks> socksArrayList = socksService.delSocks(socks);
         if (socksArrayList == null) {
-            ResponseEntity.status(400).build();
+            return ResponseEntity.status(204).build();
         }
         return ResponseEntity.ok(socksArrayList);
     }
